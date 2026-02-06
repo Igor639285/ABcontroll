@@ -6,11 +6,12 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.weight
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -100,20 +101,18 @@ private fun TokenSection(
             fontWeight = FontWeight.SemiBold
         )
         Spacer(modifier = Modifier.height(8.dp))
-        OutlinedTextField(
-            value = token,
-            onValueChange = onTokenChange,
-            modifier = Modifier.fillMaxWidth(),
-            label = { Text("API Token") },
-            singleLine = true
-        )
-        Spacer(modifier = Modifier.height(12.dp))
-        Button(
-            onClick = onConnect,
-            enabled = token.isNotBlank(),
-            modifier = Modifier.align(Alignment.End)
-        ) {
-            Text(if (isConnected) "Обновить" else "Подключить")
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            OutlinedTextField(
+                value = token,
+                onValueChange = onTokenChange,
+                modifier = Modifier.weight(1f),
+                label = { Text("API Token") },
+                singleLine = true
+            )
+            Spacer(modifier = Modifier.width(12.dp))
+            Button(onClick = onConnect, enabled = token.isNotBlank()) {
+                Text(if (isConnected) "Обновить" else "Подключить")
+            }
         }
     }
 }
@@ -126,7 +125,7 @@ private fun MessageList(
     LazyColumn(
         modifier = Modifier
             .fillMaxWidth()
-            .fillMaxHeight(0.6f)
+            .weight(1f)
             .padding(horizontal = 16.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
@@ -158,28 +157,25 @@ private fun MessageCard(message: ChatMessage, onReply: () -> Unit) {
         modifier = Modifier.fillMaxWidth()
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = message.author,
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold
-                )
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = message.author,
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Text(
+                        text = message.text,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = Color.DarkGray
+                    )
+                }
                 Text(
                     text = message.formattedTime,
                     style = MaterialTheme.typography.labelSmall,
                     color = Color.Gray
                 )
             }
-            Spacer(modifier = Modifier.height(4.dp))
-            Text(
-                text = message.text,
-                style = MaterialTheme.typography.bodyMedium,
-                color = Color.DarkGray
-            )
             Spacer(modifier = Modifier.height(8.dp))
             Row(horizontalArrangement = Arrangement.End, modifier = Modifier.fillMaxWidth()) {
                 Button(onClick = onReply) {
