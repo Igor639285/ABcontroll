@@ -47,7 +47,7 @@ import java.util.Locale
 @Composable
 fun BotControlApp(viewModel: BotViewModel = viewModel()) {
     val uiState by viewModel.uiState.collectAsState()
-    val appBarState = rememberTopAppBarState()
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
 
     Scaffold(
         topBar = {
@@ -59,7 +59,7 @@ fun BotControlApp(viewModel: BotViewModel = viewModel()) {
                         overflow = TextOverflow.Ellipsis
                     )
                 },
-                scrollBehavior = appBarState
+                scrollBehavior = scrollBehavior
             )
         }
     ) { paddingValues ->
